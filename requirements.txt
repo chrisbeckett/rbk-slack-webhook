@@ -1,0 +1,5 @@
+autopep8==1.7.0
+certifi==2022.6.15
+pycodestyle==2.9.1
+slack-sdk==3.18.1
+toml==0.10.2
