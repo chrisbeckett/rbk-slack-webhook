@@ -1,40 +1,147 @@
 from slack_sdk.webhook import WebhookClient
-url = "https://hooks.slack.com/services/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"
-webhook = WebhookClient(url)
-response = webhook.send(
-    text="fallback",
-    blocks=[
-        {
-            "type": "section",
-            "text": {
-                    "type": "mrkdwn",
-                "text": "Danny Torrence left the following review for your property:"
-            }
-        },
-        {
-            "type": "section",
-            "block_id": "section567",
-            "text": {
-                    "type": "mrkdwn",
-                        "text": "<https://example.com|Overlook Hotel> \n :star: \n Doors had too many axe holes, guest in room 237 was far too rowdy, whole place felt stuck in the 1920s."
-            },
-            "accessory": {
-                "type": "image",
-                "image_url": "https://is5-ssl.mzstatic.com/image/thumb/Purple3/v4/d3/72/5c/d3725c8f-c642-5d69-1904-aa36e4297885/source/256x256bb.jpg",
-                "alt_text": "Haunted hotel image"
-            }
-        },
-        {
-            "type": "section",
-            "block_id": "section789",
-            "fields": [
-                    {
-                        "type": "mrkdwn",
-                        "text": "*Average Rating*\n1.0"
-                    }
-            ]
-        }
-    ]
-)
+import azure.functions as func
+import dateutil.parser
+import logging
+import os
 
-# https://hooks.slack.com/services/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
+
+def main(req: func.HttpRequest) -> func.HttpResponse:
+    # Set and log environment variables for both Slack webhook URL and RSC tenant
+    slack_webhook_url = os.environ['SLACK_WEBHOOK_URL']
+    rsc_tenant_url = os.environ['RSC_TENANT_URL']
+
+    if slack_webhook_url and rsc_tenant_url:
+        logging.info(f'Slack webhook URL set to {slack_webhook_url}')
+        logging.info(
+            f'Rubrik Security Cloud tenant URL set to {rsc_tenant_url}')
+    else:
+        logging.error(
+            f'Environment variables not set correctly, please review RSC and Slack webhook settings')
+
+    source_message = req.get_json()
+
+    if source_message:
+        logging.info(f'Finding alert summary content is - {source_message}')
+        alert_summary = source_message.get('summary')
+        alert_severity = source_message.get('severity')
+        alert_timestamp = source_message.get('timestamp')
+        alert_class = source_message.get('class')
+        alert_event_id = source_message['custom_details']['seriesId']
+        alert_object_name = source_message['custom_details']['objectName']
+        alert_object_type = source_message['custom_details']['objectType']
+        alert_cluster_id = source_message['custom_details']['clusterId']
+        alert_formatted_timestamp = dateutil.parser.parse(alert_timestamp)
+        alert_display_timestamp = alert_formatted_timestamp.ctime()
+        review_findings_url = rsc_tenant_url + "/events"
+        logging.info(f'Building Slack message...')
+        slack_webhook = WebhookClient(slack_webhook_url)
+        slack_webhook_response = slack_webhook.send(
+            blocks=[
+                {
+                    "type": "divider"
+                },
+                {
+                    "type": "header",
+                    "text": {
+                            "type": "plain_text",
+                            "text": "Rubrik Security Cloud " + alert_severity + " severity event notification",
+                        "emoji": True
+                    }
+                },
+                {
+                    "type": "divider"
+                },
+                {
+                    "type": "section",
+                    "text": {
+                            "type": "mrkdwn",
+                        "text": ":bell: *Event Information*"
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                            "type": "mrkdwn",
+                            "text": "*_Event summary_* :\n\n" + alert_summary
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                            "type": "mrkdwn",
+                            "text": "*_Severity_* :\n\n" + alert_severity
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                            "type": "mrkdwn",
+                            "text": "*_Type_* :\n\n" + alert_class
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                            "type": "mrkdwn",
+                            "text": "*_Event ID_* :\n\n" + alert_event_id
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                            "type": "mrkdwn",
+                            "text": "*_Object Name_* :\n\n" + alert_object_name
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                            "type": "mrkdwn",
+                            "text": "*_Object Type_* :\n\n" + alert_object_type
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                            "type": "mrkdwn",
+                            "text": "*_Cluster ID_* :\n\n" + alert_cluster_id
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                            "type": "mrkdwn",
+                            "text": "*_Time_* :\n\n" + alert_display_timestamp
+                    }
+                },
+                {
+                    "type": "divider"
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": ":mag: *Recent events can be viewed in a browser by clicking the button*"
+                    },
+                    "accessory": {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": "Latest Events",
+                            "emoji": True
+                        },
+                        "value": "recent_events",
+                        "url": review_findings_url,
+                        "action_id": "button-action"
+                    }
+                },
+                {
+                    "type": "divider"
+                }
+            ]
+        )
+        logging.info(f'Slack message sent successfully ')
+        return func.HttpResponse(status_code=200)
+    else:
+        logging.error(f'Empty message payload recieved ')
+        return func.HttpResponse(status_code=400)
