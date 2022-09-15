@@ -10,6 +10,8 @@ This connector runs as an Azure Function and provides a webhook URL for Rubrik S
 
 Create a new webhook in the RSC "Security Settings" page (can be accessed via the gear icon in the top right hand corner) and filter out the required events and severity. For example, to send backup operations events to Slack, you may wish to select the "Backup", "Diagnostic", "Maintenance" and "System" event types with the "Critical" and "Warning" severities.
 
+Product documentation can be found at https://docs.rubrik.com/en-us/saas/saas/common/webhooks.html.
+
 ![alt text](https://github.com/chrisbeckett/rbk-slack-webhook/blob/main/slack-connector-architecture.png "Architecture overview")
 
 ## What do I need to get started?
@@ -20,6 +22,8 @@ Create a new webhook in the RSC "Security Settings" page (can be accessed via th
 - A Slack webhook URL (https://api.slack.com/messaging/webhooks)
 - Python 3.7/3.8/3.9 (3.10 is not currently supported by Azure Functions)
 - Git
+- Azure Functions command line tools
+- Azure CLI (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-windows?tabs=azure-cli)
 
 ## Obtaining the code
 
@@ -31,6 +35,7 @@ Click the "Deploy to Azure" button and fill out the deployment form
 
 - Both the **Azure Function** name and the **Storage Account** name **must be globally unique or deployment will fail (if a new storage account is created)**
 - Once the ARM template deployment is complete, open a command prompt and navigate to the **rbk-slack-connector** folder
+- **Tip** To avoid potential deployment issues, it is recommended to pin the Python version in the Function to the version you have installed locally on your staging machine. To do this, run this command from a command prompt - **az functionapp config set --name function-name --resource-group resourcegroupname --linux-fx-version "Python|3.9"** (change the function name, resource group and Python version as appropriate)
 - Install the Azure Functions command line tools (*https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=windows%2Ccsharp%2Cbash*)
 - Run **func init**
 - Run **func azure functionapp publish _functname_** where the functname is your function name from the "**Deploy to Azure**" workflow
