@@ -4,7 +4,7 @@
 
 This connector runs as an Azure Function and provides a webhook URL for Rubrik Security Cloud (RSC, formerly Polaris) to send alerts to. This provides simple connectivity to Slack as it sends alert information as cards into a Slack channel.
 
-![alt text](https://github.com/chrisbeckett/rbk-slack-connector/blob/main/slack-event.png "Slack screenshot")
+![alt text](https://github.com/chrisbeckett/rbk-slack-webhook/blob/main/slack-event.png "Slack screenshot")
 
 ## How does it work?
 
