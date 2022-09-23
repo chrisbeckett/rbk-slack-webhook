@@ -39,11 +39,11 @@
                 "description": "Storage Account type"
             }
         },
-        "TeamsWebhookURL": {
+        "SlackWebhookURL": {
             "type": "string",
-            "defaultValue": "https://myorg.webhook.office.com/webhook",
+            "defaultValue": "https://hooks.slack.com/services/XXXXXXXXXX",
             "metadata": {
-                "description": "Microsoft Teams channel webhook URL." 
+                "description": "Slack channel webhook URL." 
             }
         },
         "RubrikSecurityCloudURL": {
@@ -122,7 +122,7 @@
                             "value": "[reference(resourceId('microsoft.insights/components/', parameters('ApplicationInsightsName')), '2015-05-01').InstrumentationKey]"
                         },
                         {
-                            "name": "TEAMS_WEBHOOK_URL",
+                            "name": "SLACK_WEBHOOK_URL",
                             "value": "[parameters('TeamsWebhookURL')]"
                         },
                         {
