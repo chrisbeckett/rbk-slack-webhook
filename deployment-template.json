@@ -39,11 +39,11 @@
                 "description": "Storage Account type"
             }
         },
-        "SlackWebhookURL": {
+        "TeamsWebhookURL": {
             "type": "string",
-            "defaultValue": "https://hooks.slack.com/services/XXXXXXXXXX",
+            "defaultValue": "https://myorg.webhook.office.com/webhook",
             "metadata": {
-                "description": "Slack channel webhook URL." 
+                "description": "Microsoft Teams channel webhook URL." 
             }
         },
         "RubrikSecurityCloudURL": {
@@ -103,6 +103,7 @@
             ],
             "properties": {
                 "siteConfig": {
+                    "location": "[resourceGroup().location]",
                     "appSettings": [
                         {
                             "name": "AzureWebJobsStorage",
@@ -121,7 +122,7 @@
                             "value": "[reference(resourceId('microsoft.insights/components/', parameters('ApplicationInsightsName')), '2015-05-01').InstrumentationKey]"
                         },
                         {
-                            "name": "SLACK_WEBHOOK_URL",
+                            "name": "TEAMS_WEBHOOK_URL",
                             "value": "[parameters('TeamsWebhookURL')]"
                         },
                         {
