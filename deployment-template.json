@@ -103,6 +103,7 @@
             ],
             "properties": {
                 "siteConfig": {
+                    "location": "[resourceGroup().location]",
                     "appSettings": [
                         {
                             "name": "AzureWebJobsStorage",

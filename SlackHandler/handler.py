@@ -54,7 +54,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                 {
                     "type": "section",
                     "text": {
-                            "type": "mrkdwn",
+                        "type": "mrkdwn",
                         "text": ":bell: *Event Information*"
                     }
                 },
@@ -62,56 +62,56 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                     "type": "section",
                     "text": {
                             "type": "mrkdwn",
-                            "text": "*_Event summary_* :\n\n" + alert_summary
+                            "text": "*_Event summary_* :\t" + alert_summary
                     }
                 },
                 {
                     "type": "section",
                     "text": {
                             "type": "mrkdwn",
-                            "text": "*_Severity_* :\n\n" + alert_severity
+                            "text": "*_Severity_* :\t" + alert_severity
                     }
                 },
                 {
                     "type": "section",
                     "text": {
                             "type": "mrkdwn",
-                            "text": "*_Type_* :\n\n" + alert_class
+                            "text": "*_Type_* :\t" + alert_class
                     }
                 },
                 {
                     "type": "section",
                     "text": {
                             "type": "mrkdwn",
-                            "text": "*_Event ID_* :\n\n" + alert_event_id
+                            "text": "*_Event ID_* :\t" + alert_event_id
                     }
                 },
                 {
                     "type": "section",
                     "text": {
                             "type": "mrkdwn",
-                            "text": "*_Object Name_* :\n\n" + alert_object_name
+                            "text": "*_Object Name_* :\t" + alert_object_name
                     }
                 },
                 {
                     "type": "section",
                     "text": {
                             "type": "mrkdwn",
-                            "text": "*_Object Type_* :\n\n" + alert_object_type
+                            "text": "*_Object Type_* :\t" + alert_object_type
                     }
                 },
                 {
                     "type": "section",
                     "text": {
                             "type": "mrkdwn",
-                            "text": "*_Cluster ID_* :\n\n" + alert_cluster_id
+                            "text": "*_Cluster ID_* :\t" + alert_cluster_id
                     }
                 },
                 {
                     "type": "section",
                     "text": {
                             "type": "mrkdwn",
-                            "text": "*_Time_* :\n\n" + alert_display_timestamp
+                            "text": "*_Time_* :\t" + alert_display_timestamp
                     }
                 },
                 {
