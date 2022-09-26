@@ -1,4 +1,4 @@
-# Rubrik Security Cloud Slack Connector
+# Rubrik Security Cloud Slack Connector (Azure version)
 
 ## What does it do?
 
