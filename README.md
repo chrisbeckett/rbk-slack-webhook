@@ -19,7 +19,7 @@ Product documentation can be found at https://docs.rubrik.com/en-us/saas/saas/co
 - An RSC tenant (including URL, e.g. myorg.my.rubrik.com)
 - A Slack account
 - A Slack channel to send alerts to
-- A Slack webhook reciever URL (https://api.slack.com/messaging/webhooks)
+- An incoming Slack webhook URL (https://api.slack.com/messaging/webhooks)
 - Python 3.7/3.8/3.9 (3.10 is not currently supported by Azure Functions)
 - Git
 - Azure Functions command line tools
@@ -31,7 +31,9 @@ Run **git clone https://github.com/chrisbeckett/rbk-slack-connector.git**
 
 ## Deploying the Azure Function
 
-Click the "Deploy to Azure" button and fill out the deployment form
+Click the "Deploy to Azure" button (right click and "open in a new tab" is recommended) and fill out the deployment form
+
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fchrisbeckett%2Frbk-slack-webhook%2Fmain%2Fdeployment-template.json)
 
 - Both the **Azure Function** name and the **Storage Account** name **must be globally unique or deployment will fail (if a new storage account is created)**
 - Once the ARM template deployment is complete, open a command prompt and navigate to the **rbk-slack-connector** folder
@@ -44,4 +46,4 @@ Click the "Deploy to Azure" button and fill out the deployment form
 
 ![alt text](https://github.com/chrisbeckett/rbk-slack-webhook/blob/main/slack-webhook-config.png "Slack Webhook Config")
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fchrisbeckett%2Frbk-slack-webhook%2Fmain%2Fdeployment-template.json)
+
