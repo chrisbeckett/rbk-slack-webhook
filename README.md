@@ -16,10 +16,10 @@ Product documentation can be found at https://docs.rubrik.com/en-us/saas/saas/co
 
 ## What do I need to get started?
 
-- An RSC tenant
+- An RSC tenant (including URL, e.g. myorg.my.rubrik.com)
 - A Slack account
 - A Slack channel to send alerts to
-- A Slack webhook URL (https://api.slack.com/messaging/webhooks)
+- A Slack webhook reciever URL (https://api.slack.com/messaging/webhooks)
 - Python 3.7/3.8/3.9 (3.10 is not currently supported by Azure Functions)
 - Git
 - Azure Functions command line tools
