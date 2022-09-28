@@ -3,6 +3,7 @@ import azure.functions as func
 import dateutil.parser
 import logging
 import os
+import requests
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
@@ -12,11 +13,18 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     if slack_webhook_url and rsc_tenant_url:
         logging.info(f'Slack webhook URL set to {slack_webhook_url}')
+
         logging.info(
             f'Rubrik Security Cloud tenant URL set to {rsc_tenant_url}')
     else:
         logging.error(
             f'Environment variables not set correctly, please review RSC and Slack webhook settings')
+
+    # Check the RSC URL is reachable
+    rsc_url_status = requests.get(rsc_tenant_url)
+    if rsc_url_status.status_code != 200:
+        logging.info(
+            f'RSC tenant URL does not seem to be responding, please check the environment variable')
 
     source_message = req.get_json()
 
