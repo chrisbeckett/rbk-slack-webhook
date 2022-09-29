@@ -4,6 +4,7 @@ import dateutil.parser
 import logging
 import os
 import requests
+import re
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
@@ -25,6 +26,15 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     if rsc_url_status.status_code != 200:
         logging.info(
             f'RSC tenant URL does not seem to be responding, please check the environment variable')
+
+    # Validate the Slack webhook URL is the correct syntax using RegEx
+    slack_webhook_url_check = re.search(
+        "https://hooks.slack.com/services/T[0-9A-Z]{10}/B[0-9A-Z]{10}/[a-zA-Z0-9]{24}", slack_webhook_url)
+    if slack_webhook_url_check:
+        logging.info(f'Slack URL appears to be correctly formed')
+    else:
+        logging.error(
+            f'Slack URL appears to be malformed - please check and remediate')
 
     source_message = req.get_json()
 
