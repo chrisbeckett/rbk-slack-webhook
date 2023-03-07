@@ -123,7 +123,7 @@
                         },
                         {
                             "name": "SLACK_WEBHOOK_URL",
-                            "value": "[parameters('TeamsWebhookURL')]"
+                            "value": "[parameters('SlackWebhookURL')]"
                         },
                         {
                             "name": "RSC_TENANT_URL",
